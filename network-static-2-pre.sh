@@ -22,7 +22,7 @@ TESTTYPE="network"
 . ${KSTESTDIR}/functions.sh
 
 kernel_args() {
-    echo vnc debug=1 inst.debug ip=ens3:dhcp ip=ens4:dhcp ip=ens5:dhcp
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp ip=enp0s4:dhcp ip=enp0s5:dhcp
 }
 
 prepare() {

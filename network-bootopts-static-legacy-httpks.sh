@@ -55,8 +55,8 @@ prepare() {
 
     # Substitute IP ranges of created network in kickstart
     sed -i -e s#@KSTEST_STATIC_IP@#${ip}# -e s#@KSTEST_STATIC_NETMASK@#${netmask}# -e s#@KSTEST_STATIC_GATEWAY@#${gateway}# ${ks}
-    #ip=10.34.102.233::10.34.102.254:255.255.255.0::ens9:none
-    echo "ip_static_boot_config=\"ip=${ip} gateway=${gateway} netmask=${netmask} ksdevice=ens3\"" > ${tmpdir}/ip_static_boot_config
+    #ip=10.34.102.233::10.34.102.254:255.255.255.0::enp0s9:none
+    echo "ip_static_boot_config=\"ip=${ip} gateway=${gateway} netmask=${netmask} ksdevice=enp0s3\"" > ${tmpdir}/ip_static_boot_config
 
     ### Run http server serving kickstart
 

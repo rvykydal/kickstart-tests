@@ -22,7 +22,7 @@ TESTTYPE="network"
 . ${KSTESTDIR}/functions.sh
 
 kernel_args() {
-    echo vnc debug=1 inst.debug ip=ens3:dhcp
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp
 }
 
 # Arguments for virt-install --network options

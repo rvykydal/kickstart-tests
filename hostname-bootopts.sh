@@ -31,7 +31,7 @@ TESTTYPE="network"
 
 kernel_args() {
     . ${tmpdir}/ip_static_boot_config
-    echo vnc debug=1 inst.debug ip=ens3:dhcp ${ip_static_boot_config}
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp ${ip_static_boot_config}
 }
 
 prepare() {
@@ -49,7 +49,7 @@ prepare() {
     local gateway="$(echo "$ips" | cut -d ' ' -f 3)"
     local hostname=testhostname.example.com
 
-    echo "ip_static_boot_config=ip=${ip}::${gateway}:${netmask}:${hostname}:ens4:none" > ${tmpdir}/ip_static_boot_config
+    echo "ip_static_boot_config=ip=${ip}::${gateway}:${netmask}:${hostname}:enp0s4:none" > ${tmpdir}/ip_static_boot_config
 
     echo ${ks}
 }

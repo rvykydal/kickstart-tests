@@ -23,7 +23,7 @@ TESTTYPE="network"
 
 kernel_args() {
     . ${tmpdir}/ks_url
-    echo vnc debug=1 inst.debug ip=ens3:dhcp inst.ks=${ks_url}
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp inst.ks=${ks_url}
 }
 
 # Arguments for virt-install --network options

@@ -33,7 +33,7 @@ ip_static_boot_config=""
 
 kernel_args() {
     . ${tmpdir}/ip_static_boot_config
-    echo vnc debug=1 inst.debug ip=ens3:dhcp ${ip_static_boot_config}
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp ${ip_static_boot_config}
 }
 
 prepare() {
@@ -52,8 +52,8 @@ prepare() {
 
     # Substitute IP ranges of created network in kickstart
     sed -i -e s#@KSTEST_STATIC_IP@#${ip}# -e s#@KSTEST_STATIC_NETMASK@#${netmask}# -e s#@KSTEST_STATIC_GATEWAY@#${gateway}# ${ks}
-    #ip=10.34.102.233::10.34.102.254:255.255.255.0::ens9:none
-    echo "ip_static_boot_config=ip=${ip}::${gateway}:${netmask}::ens4:none" > ${tmpdir}/ip_static_boot_config
+    #ip=10.34.102.233::10.34.102.254:255.255.255.0::enp0s9:none
+    echo "ip_static_boot_config=ip=${ip}::${gateway}:${netmask}::enp0s4:none" > ${tmpdir}/ip_static_boot_config
 
     echo ${ks}
 }

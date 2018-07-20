@@ -30,7 +30,7 @@ TESTTYPE=${TESTTYPE:-"network"}
 
 kernel_args() {
     . ${tmpdir}/ks_url
-    echo vnc debug=1 inst.debug ip=ens3:dhcp ip=ens4:dhcp ip=ens5:dhcp inst.ks=${ks_url}
+    echo vnc debug=1 inst.debug ip=enp0s3:dhcp ip=enp0s4:dhcp ip=enp0s5:dhcp inst.ks=${ks_url}
 }
 
 prepare() {

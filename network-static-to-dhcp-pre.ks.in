@@ -5,7 +5,7 @@ url @KSTEST_URL@
 install
 %include /tmp/ksinclude
 %pre
-echo "network --device=ens4 --bootproto dhcp --onboot=no --activate" >> /tmp/ksinclude
+echo "network --device=enp0s4 --bootproto dhcp --onboot=no --activate" >> /tmp/ksinclude
 %end
 
 
@@ -27,7 +27,7 @@ shutdown
 
 @KSINCLUDE@ post-nochroot-lib-network.sh
 
-check_gui_configurations ens3 ens4
+check_gui_configurations enp0s3 enp0s4
 
 %end
 
@@ -35,15 +35,15 @@ check_gui_configurations ens3 ens4
 
 @KSINCLUDE@ post-lib-network.sh
 
-check_device_connected ens3 yes
-check_ifcfg_exists ens4-1 no
-check_ifcfg_key_exists ens4 IPADDR no
-check_ifcfg_key_exists ens4 PREFIX no
-check_ifcfg_key_exists ens4 NETMASK no
-check_ifcfg_key_exists ens4 GATEWAY no
-check_device_ifcfg_value ens4 ONBOOT no
-check_device_connected ens4 yes
-check_number_of_device_ipv4_addresses ens4 1
+check_device_connected enp0s3 yes
+check_ifcfg_exists enp0s4-1 no
+check_ifcfg_key_exists enp0s4 IPADDR no
+check_ifcfg_key_exists enp0s4 PREFIX no
+check_ifcfg_key_exists enp0s4 NETMASK no
+check_ifcfg_key_exists enp0s4 GATEWAY no
+check_device_ifcfg_value enp0s4 ONBOOT no
+check_device_connected enp0s4 yes
+check_number_of_device_ipv4_addresses enp0s4 1
 
 # No error was written to /root/RESULT file, everything is OK
 if [[ ! -e /root/RESULT ]]; then

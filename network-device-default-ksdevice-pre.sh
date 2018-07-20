@@ -23,7 +23,7 @@ TESTTYPE="network"
 
 kernel_args() {
     . ${tmpdir}/ks_url
-    echo vnc debug=1 inst.debug ksdevice=ens4
+    echo vnc debug=1 inst.debug ksdevice=enp0s4
 }
 
 # Arguments for virt-install --network options
