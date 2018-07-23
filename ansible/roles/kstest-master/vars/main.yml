@@ -3,7 +3,7 @@
 kstest:
   master:
     # ssh key to access remote hosts for running tests
-    private_ssh_key:
+    private_ssh_key: /home/rvykydal/.ssh/kstests.pem
     # relative path in home directory
     git_repo_dir: git/kickstart-tests
     # set to "no" to prevent pulling the repository before the run
