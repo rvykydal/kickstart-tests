@@ -6,11 +6,11 @@
 # If not defined, all hosts from kstest group will be used
 #kstest_test_remotes:
 # Software http repository for tests.
-kstest_url: "--url=http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+kstest_url: "--url=http://download.eng.brq.redhat.com/nightly/latest-RHEL-8/compose/BaseOS/x86_64/os/"
 # Software ftp repository for tests.
-kstest_ftp_url: "ftp://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+kstest_ftp_url: "ftp://download.eng.brq.redhat.com/nightly/latest-RHEL-8/compose/BaseOS/x86_64/os/"
 # Boot iso url.
-kstest_boot_iso_url: "http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"
+kstest_boot_iso_url: "http://download.eng.brq.redhat.com/nightly/latest-RHEL-8/compose/BaseOS/x86_64/os/images/boot.iso"
 # Number of jobs to be run in parallel on one host.
 kstest_test_jobs: 4
 # Tests to be run (empty for all).
@@ -21,7 +21,7 @@ kstest_test_type: ""
 # Master has to be authorized for accessing the target,
 # ie with kstest.master.private_ssh_key defined in vars/main.yml
 #kstest_remote_results_path: "user@host:results"
-kstest_remote_results_path: ""
+kstest_remote_results_path: "root@10.43.136.2:/mnt/trees/kstests/rhel8"
 # Keep results locally after syncing to remote destination.
 # True unless "no".
 kstest_remote_results_keep_local: "no"
