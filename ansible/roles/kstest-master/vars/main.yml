@@ -10,7 +10,7 @@ kstest:
     git_pull: "yes"
     # schedule running test
     cron:
-      disabled: true
+      disabled: false
       hour: 22
       minute: 00
     results_summary_script:
