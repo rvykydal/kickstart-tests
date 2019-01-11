@@ -8,6 +8,11 @@ kstest:
       # relative path in home directory ("" to disable creating summary)
       dest: ""
 
+    # Overriding repos in fragments
+    fragments_override_dir: fragments_override
+    # relative to kickstart-tests repository
+    override_repos_file_path: repos/defaults.ks
+
     ### Locations (to be used by other playbooks)
     file:
       run: .run
