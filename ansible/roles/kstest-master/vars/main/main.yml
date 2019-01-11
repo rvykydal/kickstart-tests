@@ -11,7 +11,7 @@ kstest:
     # Overriding repos in fragments
     fragments_override_dir: fragments_override
     # relative to kickstart-tests repository
-    override_repos_file_path: repos/defaults.ks
+    override_repos_file_path: repos/default.ks
 
     ### Locations (to be used by other playbooks)
     file:

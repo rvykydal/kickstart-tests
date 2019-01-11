@@ -19,7 +19,7 @@ RESULTS_SUMMARY_SCRIPT="{{ kstest.master.results_summary_script.dest }}"
 UPDATES_IMAGE="{{ kstest_updates_img }}"
 ADDITIONAL_BOOT_OPTIONS="{{ kstest_additional_boot_options }}"
 TEST_DEFAULTS_FILE=scripts/defaults.sh
-FRAGMENTS_OVERRIDE_DIR="{{ kstest.fragments_override_dir}}"
+FRAGMENTS_OVERRIDE_DIR="{{ kstest.master.fragments_override_dir}}"
 
 COMPOSE_BOOT_ISO=images/boot.iso
 KSTEST_USER=kstest
@@ -37,6 +37,7 @@ RESULT_REPORT_FILENAME={{ kstest.master.file.result_report }}
 TEST_PARAMETERS_FILENAME={{ kstest.master.file.test_parameters }}
 LOG_FILENAME={{ kstest.master.file.log }}
 RUN_FILE_PATH=${HOME_DIR}/{{ kstest.master.file.run }}
+FRAGMENTS_OVERRIDE_PATH=${HOME_DIR}/${FRAGMENTS_OVERRIDE_DIR}
 
 # Test run id
 START_TIME=$(date +%F-%H_%M_%S)
@@ -174,7 +175,7 @@ fi
 ### Override software repositories
 OVERRIDE_ARG=""
 if [[ "${KSTEST_OVERRIDE_REPOS}" != "no" ]]; then
-    OVERRIDE_ARG="-o ${FRAGMENTS_OVERRIDE_DIR}"
+    OVERRIDE_ARG="-o ${FRAGMENTS_OVERRIDE_PATH}"
 fi
 
 
