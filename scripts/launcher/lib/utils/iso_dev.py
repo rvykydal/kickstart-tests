@@ -48,6 +48,26 @@ class IsoDev(object):
         return self._iso_mount.mount_dir
 
     @property
+    def kernel(self):
+        if not self._iso_mount:
+            if is_dry_run():
+                return "dry-run-mode"
+            else:
+                raise IsoDeviceException("To get kernel path you have to mount the ISO.")
+
+        return self._iso_mount.kernel
+
+    @property
+    def initrd(self):
+        if not self._iso_mount:
+            if is_dry_run():
+                return "dry-run-mode"
+            else:
+                raise IsoDeviceException("To get initrd path you have to mount the ISO.")
+
+        return self._iso_mount.initrd
+
+    @property
     def stage2(self):
         if not self._iso_mount:
             if is_dry_run():
