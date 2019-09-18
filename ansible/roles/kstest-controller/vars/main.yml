@@ -1,17 +1,6 @@
 ---
 # vars file for kstest-controller
 
-### Users
-
-kstest_controller_user: kstest
-linchpin_user: kstest
-private_keys_to_upload:
-  - "/home/rvykydal/.ssh/kstests.pem"
-public_keys_to_upload:
-  - "/home/rvykydal/.ssh/kstests.pub"
-  - "/home/rvykydal/.ssh/id_rsa.pub"
-cloud_config_file: /home/rvykydal/.config/linchpin/clouds.yml
-
 ### Linchpin installation
 
 virtualenv_path: "/home/{{ linchpin_user }}/virtualenv-linchpin"
