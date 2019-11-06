@@ -1,0 +1,77 @@
+#test name: network-no-network-cmd-httpks
+# Test the case where network command is not present in kickstart
+
+# The test was created to test rhbz #1768791 but it would require getting
+# stage2 from network, which is not so easy to achieve in our infrastructure
+# (stage2=hd:CDLABEL=Fedora-E-dvd-x86_64-rawh forced)
+
+%ksappend repos/default.ks
+install
+
+# No network configuration
+
+bootloader --timeout=1
+zerombr
+clearpart --all
+autopart
+
+keyboard us
+lang en
+timezone America/New_York
+rootpw qweqwe
+shutdown
+
+%packages
+%end
+
+%pre
+
+# We will copy /root/RESULT to /mnt/sysimage/root/RESULT at the beginning of the %post (--nochroot) checks
+@KSINCLUDE@ post-lib-network.sh
+
+check_ifcfg_exists @KSTEST_NETDEV1@ no
+check_ifcfg_exists @KSTEST_NETDEV2@ no
+check_device_connected @KSTEST_NETDEV1@ yes
+check_device_connected @KSTEST_NETDEV2@ yes
+
+check_number_of_connections 1
+
+check_connection_device "Wired Connection" @KSTEST_NETDEV1@
+check_connection_device "Wired Connection" @KSTEST_NETDEV2@
+
+%end
+
+%post --nochroot
+
+@KSINCLUDE@ post-nochroot-lib-network.sh
+
+# First copy result from %pre stage to chroot
+copy_pre_stage_result
+pass_autoconnections_info_to_chroot
+
+check_gui_configurations @KSTEST_NETDEV1@ @KSTEST_NETDEV2@
+
+
+%end
+
+%post
+
+@KSINCLUDE@ post-lib-network.sh
+
+check_device_ifcfg_value @KSTEST_NETDEV1@ ONBOOT yes
+check_device_ifcfg_value @KSTEST_NETDEV2@ ONBOOT yes
+
+check_device_connected @KSTEST_NETDEV1@ yes
+check_device_connected @KSTEST_NETDEV2@ yes
+
+check_number_of_connections 3
+check_connection_device "Wired Connection" @KSTEST_NETDEV1@
+check_connection_device @KSTEST_NETDEV1@
+check_connection_device "Wired Connection" @KSTEST_NETDEV2@
+check_connection_device @KSTEST_NETDEV2@
+
+# No error was written to /root/RESULT file, everything is OK
+if [[ ! -e /root/RESULT ]]; then
+   echo SUCCESS > /root/RESULT
+fi
+%end
