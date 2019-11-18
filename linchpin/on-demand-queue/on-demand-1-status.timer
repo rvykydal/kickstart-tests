@@ -1,0 +1,10 @@
+[Unit]
+Description=Schedule updating of status of on-demand-1 queue
+
+[Timer]
+# minutely
+OnCalendar=*-*-* *:*:00
+Unit=on-demand-1-status.service
+
+[Install]
+WantedBy=default.target

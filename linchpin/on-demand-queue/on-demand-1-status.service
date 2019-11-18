@@ -1,0 +1,6 @@
+[Unit]
+Description=Update status of on-demand-1 queue
+
+[Service]
+Type=simple
+ExecStart=/home/kstest/on-demand-1/queue-update-status.sh

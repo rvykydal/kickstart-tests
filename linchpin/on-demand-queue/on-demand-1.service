@@ -1,0 +1,6 @@
+[Unit]
+Description=Kickstart tests queue on-demand-1
+
+[Service]
+Type=simple
+ExecStart=/home/kstest/on-demand-1/queue.sh
