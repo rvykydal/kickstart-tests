@@ -1,0 +1,73 @@
+---
+# Template for configuration of a test run in on-demand queue
+
+### The subject to be tested.
+
+# Installer boot iso url.
+#kstest_boot_iso_url: "http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"
+
+# Url of updates image to be used.
+#kstest_updates_img: ""
+
+
+### Generating of updates image
+
+# Should the updates image be automatically generated?
+# Ignored if kstest_updates_img is set.
+# False unless "yes"
+#kstest_updates_generate: ""
+
+# Installer repo from which the updates will be generated
+#kstest_updates_repo: https://github.com/rhinstaller/anaconda.git
+
+# Head of the image update
+#kstest_updates_head: master
+
+# Base of the image update
+# Defaults to the version of anaconda detected in the installer iso
+#kstest_updates_base: ""
+
+
+### Software repositories for tests.
+
+# Override platform defaults with the repositories defined below.
+# True unless "no"
+#kstest_override_repos: "yes"
+
+# Base repository url
+# In the form of kickstart url command option.
+#kstest_url: "--url=http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+
+# Software ftp repository for tests.
+#kstest_ftp_url: "ftp://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+
+# Additional repo commands.
+# Overrides repos/defaults.ks fragment.
+# Set to [] for no additional repositories.
+#kstest_repos:
+#  - "repo --name=modular --baseurl=http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Modular/x86_64/os/"
+
+
+### The tests to be run.
+
+# Platform to be tested.
+# Empty string for default.
+#kstest_platform: ""
+
+# Tests to be run (empty for all).
+# Space separated names of tests.
+#kstest_tests_to_run: ""
+
+# Category of tests to be run.
+# Applied only if kstest_tests_to_run is empty.
+#kstest_test_type: ""
+
+# Categories of tests to be skipped.
+# Applied only if kstest_tests_to_run is empty.
+# Space separated test types.
+#kstest_skip_test_types: ""
+
+
+# kickstart-tests repository and branch to be used.
+#kstest_git_repo: https://github.com/rhinstaller/kickstart-tests.git
+#kstest_git_version: master

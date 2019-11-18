@@ -1,0 +1,5 @@
+kstest_boot_iso_url: "http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"
+kstest_url: "--url=http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+kstest_ftp_url: "ftp://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/"
+kstest_repos:
+  - "repo --name=modular --baseurl=http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Modular/x86_64/os/"
