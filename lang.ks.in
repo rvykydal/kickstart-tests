@@ -16,7 +16,7 @@ rootpw testcase
 shutdown
 
 %packages
-@core
+#@core
 %end
 
 %post
