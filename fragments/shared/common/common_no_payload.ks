@@ -1,6 +1,6 @@
 ## common commands without payload configuration ##
 install
-shutdown
+#shutdown
 # network
 network --bootproto=dhcp
 # storage & bootloader
