@@ -10,16 +10,6 @@
 %ksappend common/common_no_payload.ks
 
 %packages --excludedocs
-@container-management
-@core
-@hardware-support
-@headless-management
-@server-product
-@standard
-# The vdo package  stores license files in the docs folder
-# so they are still installed even if we tell DNF to
-# not install docs.
--vdo
 %end
 
 %post
