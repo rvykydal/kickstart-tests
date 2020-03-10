@@ -33,7 +33,7 @@ inject_ks_to_initrd() {
 
 DEFAULT_BASIC_BOOTOPTS="debug=1 inst.debug"
 
-DEFAULT_DRACUT_BOOTOPTS="rd.shell=0 rd.emergency=poweroff"
+DEFAULT_DRACUT_BOOTOPTS="rd.shell=0 rd.emergency=poweroff rd.nofcoe=1"
 
 DEFAULT_BOOTOPTS="${DEFAULT_BASIC_BOOTOPTS} ${DEFAULT_DRACUT_BOOTOPTS}"
 
