@@ -84,7 +84,7 @@ class RunnerConfiguration(BaseConfiguration):
         self._keep_option = KeepLevel.NOTHING
         self._updates_img_path = ""
         self._append_host_id = False
-        self._hung_task_timeout_secs = 1200
+        self._hung_task_timeout_secs = 3600000
 
     @property
     def shell_test_path(self):
