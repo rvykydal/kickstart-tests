@@ -1,0 +1,4 @@
+---
+kstest_master_cron_disabled: false
+kstest_master_cron_hour: 21
+kstest_master_cron_minute: 10

@@ -1,0 +1,16 @@
+---
+kstest_boot_iso_url: "http://download.eng.brq.redhat.com/pub/fedora/fedmsg/dumpdata/latest-rawhide/Everything/x86_64/os/images/boot.iso"
+kstest_url: "--url=http://download.eng.brq.redhat.com/pub/fedora/fedmsg/dumpdata/latest-rawhide/Everything/x86_64/os/"
+kstest_ftp_url: "ftp://download.eng.brq.redhat.com/pub/fedora/fedmsg/dumpdata/latest-rawhide/Everything/x86_64/os/"
+kstest_repos:
+    - "repo --name=modular --baseurl=http://download.eng.brq.redhat.com/pub/fedora/fedmsg/dumpdata/latest-rawhide/Modular/x86_64/os/"
+kstest_remote_results_path: "root@10.43.136.2:/mnt/trees/kstests/"
+kstest_remote_results_keep_local: "no"
+kstest_skip_test_types: "rhel-only"
+kstest_test_jobs: 6
+#kstest_result_run_dir_suffix: ""
+
+#kstest_updates_img: http://10.43.136.2/ks/rv/updates.storagethreads2.img
+#kstest_git_repo: https://github.com/rvykydal/kickstart-tests.git
+#kstest_git_version: keyfile
+
