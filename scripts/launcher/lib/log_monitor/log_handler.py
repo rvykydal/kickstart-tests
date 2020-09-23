@@ -24,7 +24,7 @@ class VirtualLogRequestHandler(LogRequestHandler):
 
     # Specify the error lines you want to ignore.
     ignored_simple_tests = [
-        # "Call Trace:"
+        "Call Trace:"
     ]
 
     # Specify error lines you want to add on top
