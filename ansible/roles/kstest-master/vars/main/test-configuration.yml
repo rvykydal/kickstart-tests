@@ -8,9 +8,9 @@ kstest_remote_results_path: "root@10.43.136.2:/mnt/trees/kstests/"
 kstest_remote_results_keep_local: "no"
 kstest_skip_test_types: "rhel-only"
 kstest_test_jobs: 6
-#kstest_result_run_dir_suffix: ""
+kstest_result_run_dir_suffix: ".ignore_call_trace"
 
 #kstest_updates_img: http://10.43.136.2/ks/rv/updates.storagethreads2.img
-#kstest_git_repo: https://github.com/rvykydal/kickstart-tests.git
-#kstest_git_version: keyfile
+kstest_git_repo: https://github.com/rvykydal/kickstart-tests.git
+kstest_git_version: disable_call_trace
 
