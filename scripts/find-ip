@@ -1,5 +1,6 @@
+#!/bin/bash
 #
-# Copyright (C) 2020  Red Hat, Inc.
+# Copyright (C) 2015  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions of
@@ -15,46 +16,11 @@
 # License and may only be used or replicated with the express permission of
 # Red Hat, Inc.
 #
-# Red Hat Author(s): Radek Vykydal <rvykydal@redhat.com>
+# Red Hat Author(s): David Shea <dshea@redhat.com>
 
-TESTTYPE="network"
+# Print something that looks like an externally accessible IPv4 address.
 
-. ${KSTESTDIR}/functions.sh
-
-kernel_args() {
-    . ${tmpdir}/ks_url
-    echo ${DEFAULT_BOOTOPTS} BOOTIF=01-52-54-00-12-34-60 inst.ks=${ks_url}
-}
-
-# Arguments for virt-install --network options
-prepare_network() {
-    echo "network=default,mac=52:54:00:12:34:60"
-    echo "network=default"
-}
-
-prepare() {
-    ks=$1
-    tmpdir=$2
-
-    # Copy the kickstart to a directory in tmpdir
-    mkdir ${tmpdir}/http
-    cp $ks ${tmpdir}/http/ks.cfg
-
-    # Start a http server to serve the included file
-    start_httpd ${tmpdir}/http $tmpdir
-
-    echo ks_url=${httpd_url}ks.cfg > ${tmpdir}/ks_url
-    echo "${ks}"
-}
-
-inject_ks_to_initrd() {
-    echo "false"
-}
-
-cleanup() {
-    tmpdir=$1
-
-    if [ -f ${tmpdir}/httpd-pid ]; then
-        kill $(cat ${tmpdir}/httpd-pid)
-    fi
-}
+ip addr list | \
+    grep '^[[:space:]]*inet\>.*scope global' | \
+    head -1 | \
+    sed 's/^[[:space:]]*inet \([[:digit:].]*\).*/\1/'

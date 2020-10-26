@@ -28,5 +28,5 @@ kernel_args() {
 
 # Arguments for virt-install --network options
 prepare_network() {
-    echo "user"
+    echo "network:default"
 }

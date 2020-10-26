@@ -75,7 +75,7 @@ prepare_network() {
     local tmpdir=$1
     local network=$(basename ${tmpdir})
     echo "network:${network}"
-    echo "user"
+    echo "network:default"
 }
 
 cleanup() {
