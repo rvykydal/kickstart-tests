@@ -410,8 +410,10 @@ if [[ "$TEST_REMOTES" != "" ]]; then
     # not have. So always set a well known locale, which should prevent this
     # missmatch from happening.
     export LANG=en_US.UTF-8
+    export PARALLEL="--env KSTEST_NETDEV1 --env KSTEST_NETDEV2 --env KSTEST_NETDEV3
+                     --env KSTEST_NETDEV4 --env KSTEST_NETDEV5 --env KSTEST_NETDEV6"
 
-    parallel --no-notice ${remote_args} --wd kickstart-tests --env _ --jobs ${TEST_JOBS:-4} \
+    parallel --no-notice ${remote_args} --wd kickstart-tests --jobs ${TEST_JOBS:-4} \
              PYTHONPATH=$PYTHONPATH scripts/launcher/run_one_test.py \
                                                                -i ../install_images/${_IMAGE} \
                                                                -k ${KEEPIT} \
