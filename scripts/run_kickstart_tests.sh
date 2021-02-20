@@ -411,7 +411,7 @@ if [[ "$TEST_REMOTES" != "" ]]; then
     # missmatch from happening.
     export LANG=en_US.UTF-8
 
-    parallel --no-notice ${remote_args} --wd kickstart-tests --jobs ${TEST_JOBS:-4} \
+    parallel --no-notice ${remote_args} --wd kickstart-tests --env _ --jobs ${TEST_JOBS:-4} \
              PYTHONPATH=$PYTHONPATH scripts/launcher/run_one_test.py \
                                                                -i ../install_images/${_IMAGE} \
                                                                -k ${KEEPIT} \
