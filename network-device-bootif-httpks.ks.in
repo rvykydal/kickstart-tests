@@ -1,4 +1,6 @@
 #test name: network-device-bootif
+# Tests --device=bootif in kickstart but also
+# ip= and BOOTIF set for two different devices: https://bugzilla.redhat.com/show_bug.cgi?id=1915493#c32
 %ksappend repos/default.ks
 
 network --device=bootif --bootproto=dhcp --ipv6=2001:cafe:cafe::1/64
