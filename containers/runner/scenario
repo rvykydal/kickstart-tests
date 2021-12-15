@@ -38,5 +38,7 @@ case "$SCENARIO" in
     # just run a single test on standard Rawhide; mostly for testing infrastructure
     minimal) $LAUNCH "$@" container ;;
 
+    rtt-pipeline-test) $LAUNCH "$@" container keyboard ;;
+
     *) echo "ERROR: unknown scenario $1" >&2; exit 1 ;;
 esac
