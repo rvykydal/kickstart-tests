@@ -8,7 +8,7 @@ on:
 jobs:
   scenario:
     name: Scenario
-    runs-on: [self-hosted, kstest-rtt-pipeline]
+    runs-on: [self-hosted, kstest-rtt-pipeline-2]
     strategy:
       matrix:
         scenario: [rtt-pipeline-test]
@@ -34,6 +34,12 @@ jobs:
         with:
           ref: rtt-pipeline
 
+      - name: Clone Permian repositories
+        run: |
+          git clone --recurse-submodules https://gitlab.cee.redhat.com/pholica/rtt-pipeline.git --branch kstests-poc-gh
+          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib
+          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib-polarion-importer
+
       # use the latest official packages for the nightly runs
       - name: Clean up squid cache
         run: sudo containers/squid.sh clean
@@ -42,7 +48,9 @@ jobs:
         run: sudo containers/squid.sh start
 
       - name: Run scenario ${{ matrix.scenario }} in container
-        run: sudo --preserve-env=TEST_JOBS,GITHUB_TOKEN containers/runner/scenario ${{ matrix.scenario }} --defaults .github/defaults.sh
+        working-directory: ./rtt-pipeline
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test --testplan "kstests poc plan" run_event '{"type":"kstest-poc","bootIso":{"x86_64":"http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"},"other":{"scenario":"rtt-pipeline-test","ksrepo_dir":"${{ github.workspace }}"}}'
+          #run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test -o workflows.dry_run=True --testplan "kstests poc plan" run_event '{"type":"kstest-poc","bootIso":{"x86_64":"http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"},"other":{"scenario":"rtt-pipeline-test","ksrepo_dir":"${{ github.workspace }}"}}'
 
       - name: Collect logs
         if: always()
