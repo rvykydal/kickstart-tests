@@ -62,3 +62,4 @@ jobs:
             kickstart-tests/data/logs/kstest.log
             kickstart-tests/data/logs/kstest-*/*.log
             kickstart-tests/data/logs/kstest-*/anaconda/lorax-packages.log
+            rtt-pipeline/pipeline-debug.log
