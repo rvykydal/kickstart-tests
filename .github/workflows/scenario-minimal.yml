@@ -30,6 +30,8 @@ jobs:
 
       - name: Clone repository
         uses: actions/checkout@v2
+        with:
+          path: kickstart-tests
 
       - name: Clone Permian repositories
         run: |
@@ -40,13 +42,15 @@ jobs:
       # use the latest official packages for the nightly runs
       - name: Clean up squid cache
         run: sudo containers/squid.sh clean
+        working-directory: ./kickstart-tests
 
       - name: Ensure http proxy is running
         run: sudo containers/squid.sh start
+        working-directory: ./kickstart-tests
 
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./rtt-pipeline
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test --testplan "kstests poc plan" run_event '{"type":"kstest-poc","bootIso":{"x86_64":"http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"},"other":{"scenario":"rtt-pipeline-test","ksrepo_dir":"${{ github.workspace }}"}}'
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test --testplan "kstests poc plan" run_event '{"type":"kstest-poc","bootIso":{"x86_64":"http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"},"other":{"scenario":"rtt-pipeline-test","ksrepo_dir":"${{ github.workspace }}/kickstart-tests"}}'
 
       - name: Collect logs
         if: always()
@@ -55,6 +59,6 @@ jobs:
           name: 'logs-${{ matrix.scenario }}'
           # skip the /anaconda subdirectories, too large
           path: |
-            data/logs/kstest.log
-            data/logs/kstest-*/*.log
-            data/logs/kstest-*/anaconda/lorax-packages.log
+            kickstart-tests/data/logs/kstest.log
+            kickstart-tests/data/logs/kstest-*/*.log
+            kickstart-tests/data/logs/kstest-*/anaconda/lorax-packages.log
