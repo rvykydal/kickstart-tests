@@ -1,0 +1,60 @@
+# Run a minimal scenario on m1.xlarge runner
+name: Minimal scenario run in Permian
+on:
+  workflow_dispatch:
+    ref: rtt-pipeline
+
+jobs:
+  scenario:
+    name: Scenario in Permian
+    runs-on: [self-hosted, kstest-permian-small]
+    strategy:
+      matrix:
+        scenario: [minimal]
+      fail-fast: false
+
+    # these settings depend on the infrastructure;
+    timeout-minutes: 30
+    env:
+      TEST_JOBS: 4
+      GITHUB_TOKEN: /home/github/github-token
+
+    steps:
+      # self-hosted runners don't do this automatically; also useful to keep stuff around for debugging
+      # need to run sudo as the launch script and the container create root/other user owned files
+      - name: Clean up previous run
+        run: |
+          sudo podman ps -q --all --filter='ancestor=kstest-runner' | xargs -tr sudo podman rm -f
+          sudo podman volume rm --all || true
+          sudo rm -rf *
+
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Clone Permian repositories
+        run: |
+          git clone --recurse-submodules https://gitlab.cee.redhat.com/pholica/rtt-pipeline.git --branch kstests-poc-gh
+          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib
+          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib-polarion-importer
+
+      # use the latest official packages for the nightly runs
+      - name: Clean up squid cache
+        run: sudo containers/squid.sh clean
+
+      - name: Ensure http proxy is running
+        run: sudo containers/squid.sh start
+
+      - name: Run scenario ${{ matrix.scenario }} in container
+        working-directory: ./rtt-pipeline
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test --testplan "kstests poc plan" run_event '{"type":"kstest-poc","bootIso":{"x86_64":"http://download.eng.brq.redhat.com/pub/fedora/development-rawhide/Everything/x86_64/os/images/boot.iso"},"other":{"scenario":"rtt-pipeline-test","ksrepo_dir":"${{ github.workspace }}"}}'
+
+      - name: Collect logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'logs-${{ matrix.scenario }}'
+          # skip the /anaconda subdirectories, too large
+          path: |
+            data/logs/kstest.log
+            data/logs/kstest-*/*.log
+            data/logs/kstest-*/anaconda/lorax-packages.log
