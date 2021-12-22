@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         #scenario: [daily-iso, rhel8, rhel9]
-        scenario: [rhel-8]
+        scenario: [small]
       fail-fast: false
 
     # these settings depend on the infrastructure; on upshift ocp-master-xxl they take about 4 hours
@@ -33,6 +33,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: kickstart-tests
+          ref: rtt-pipeline
 
       - name: Clone Permian repositories
         run: |
@@ -51,7 +52,7 @@ jobs:
 
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./rtt-pipeline
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath=./tests/test_library/kickstart-test --testplan "kstests poc plan" run_event '{"type":"kstest-poc","other":{"scenario":"${{ matrix.scenario }}","ksrepo_dir":"${{ github.workspace }}/kickstart-tests"}}'
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o workflows.dry_run=True --testplan "${{ matrix.scenario }}" run_event '{"type":"kstest-poc","other":{"ksrepo_dir":"${{ github.workspace }}/kickstart-tests"}}'
 
       - name: Collect anaconda logs
         if: always()
