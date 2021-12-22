@@ -35,6 +35,10 @@ jobs:
           path: kickstart-tests
           ref: rtt-pipeline
 
+      - name: Generate test cases
+        working-directory: ./kickstart-tests
+        run: scripts/generate-testcases.py -t ./testlib/test_cases/kstest-template.tc.yaml.j2 . -o ./testlib/test_cases
+
       - name: Clone Permian repositories
         run: |
           git clone --recurse-submodules https://gitlab.cee.redhat.com/pholica/rtt-pipeline.git --branch kstests-poc-gh
