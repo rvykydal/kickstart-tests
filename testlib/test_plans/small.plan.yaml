@@ -1,0 +1,9 @@
+name: small
+description: Run of a few tests for development
+point_person: rvykydal@redhat.com
+artifact_type: kstest-poc
+verified_by:
+  test_cases:
+    query: '"knownfailure" not in tc.tags and
+            "manual" not in tc.tags and
+            "keyboard" in tc.tags'
