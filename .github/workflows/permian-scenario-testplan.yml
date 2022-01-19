@@ -54,19 +54,18 @@ jobs:
         working-directory: ./kickstart-tests
 
       - name: Set platform from scenario
-        id: platfrom_from_scenario
+        id: platform_from_scenario
         run: |
           set -eux
-          SCENARIO="${{ matrix.scenario }}"
-          if [ "${SCENARIO}" == "rhel8" ]; then
+          if [ "${{ matrix.scenario }}" == "rhel8" ]; then
             echo "::set-output name=platform::rhel8"
-          elif [ "${SCENARIO}" == "rhel9" ]; then
+          elif [ "${{ matrix.scenario }}" == "rhel9" ]; then
             echo "::set-output name=platform::rhel9"
-          elif [ "${SCENARIO}" == "daily-iso" ]; then
+          elif [ "${{ matrix.scenario }}" == "daily-iso" ]; then
             echo "::set-output name=platform::fedora"
           else
             echo "::set-output name=platform::fedora"
-            echo "Scenario ${SCENARIO} can't be mapped to platform"
+            echo "Scenario ${{ matrix.scenario }} can't be mapped to platform"
           fi
 
       - name: Run scenario ${{ matrix.scenario }} in container
