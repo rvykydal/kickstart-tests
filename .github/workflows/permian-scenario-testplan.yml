@@ -65,8 +65,8 @@ jobs:
           elif [ "${SCENARIO}" == "daily-iso" ]; then
             echo "::set-output name=platform::fedora"
           else
+            echo "::set-output name=platform::fedora"
             echo "Scenario ${SCENARIO} can't be mapped to platform"
-            exit 1
           fi
 
       - name: Run scenario ${{ matrix.scenario }} in container
