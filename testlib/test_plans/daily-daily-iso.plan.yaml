@@ -1,7 +1,9 @@
 name: daily daily-iso
 description: Daily run on current rawhide with anaconda dnf and python-blivet daily builds
 point_person: rvykydal@redhat.com
-artifact_type: kstest-poc
+artifact_type: github.scheduled.daily.kstest
+execute_on:
+  - filter: event.scenario.scenario == "daily-iso"
 verified_by:
   test_cases:
     query: '"knownfailure" not in tc.tags and
