@@ -41,9 +41,8 @@ jobs:
 
       - name: Clone Permian repositories
         run: |
-          git clone --recurse-submodules https://gitlab.cee.redhat.com/pholica/rtt-pipeline.git --branch kstests-poc-gh
-          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib
-          git clone https://code.engineering.redhat.com/gerrit/rtt/tclib-polarion-importer
+          git clone https://gitlab.cee.redhat.com/zveleba/permian.git --branch kstest-daily-scenario
+          git clone https://github.com/rhinstaller/tclib.git
 
       # use the latest official packages for the nightly runs
       - name: Clean up squid cache
@@ -54,9 +53,25 @@ jobs:
         run: sudo containers/squid.sh start
         working-directory: ./kickstart-tests
 
+      - name: Set platform from scenario
+        id: platfrom_from_scenario
+        run: |
+          set -eux
+          SCENARIO="${{ matrix.scenario }}"
+          if [ "${SCENARIO}" == "rhel8" ]; then
+            echo "::set-output name=platform::rhel8"
+          elif [ "${SCENARIO}" == "rhel9" ]; then
+            echo "::set-output name=platform::rhel9"
+          elif [ "${SCENARIO}" == "daily-iso" ]; then
+            echo "::set-output name=platform::fedora"
+          else
+            echo "Scenario ${SCENARIO} can't be mapped to platform"
+            exit 1
+          fi
+
       - name: Run scenario ${{ matrix.scenario }} in container
-        working-directory: ./rtt-pipeline
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib:${{ github.workspace }}/tclib-polarion-importer PIPELINE_WebUI_listen_port=55577 ./run_subset --debug-log pipeline-debug.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" --testplan "${{ matrix.scenario }}" run_event '{"type":"kstest-poc","other":{"ksrepo_dir":"${{ github.workspace }}/kickstart-tests"}}'
+        working-directory: ./permian
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=True -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}"}}'
 
       - name: Collect anaconda logs
         if: always()
@@ -75,4 +90,4 @@ jobs:
         with:
           name: 'logs-permian-${{ matrix.scenario }}'
           path: |
-            rtt-pipeline/pipeline-debug.log
+            permian/permian.log
