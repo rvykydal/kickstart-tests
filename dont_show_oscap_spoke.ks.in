@@ -1,0 +1,25 @@
+text
+timezone Europe/Prague --utc
+keyboard --vckeymap=us --xlayouts='us'
+lang en_US.UTF-8
+rootpw redhat
+zerombr
+clearpart --all --initlabel
+autopart
+%packages
+@core
+%end
+
+%post --nochroot
+# Check the syslog for OSCAP Addons
+ 
+errors=$( grep "Anaconda.Addons" /tmp/syslog )
+
+if [[ -n "${errors}" ]]; then
+    echo "OSCAP Spoke still enabled:" > /mnt/sysroot/root/RESULT
+    echo "${errors}" >> /mnt/sysroot/root/RESULT
+else
+    echo "SUCCESS" >> /mnt/sysroot/root/RESULT
+fi
+
+%end
