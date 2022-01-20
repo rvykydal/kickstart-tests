@@ -10,8 +10,8 @@ jobs:
     runs-on: [self-hosted, kstest-permian]
     strategy:
       matrix:
-        scenario: [daily-iso, rhel8, rhel9]
-        #scenario: [small]
+        #scenario: [daily-iso, rhel8, rhel9]
+        scenario: [small]
       fail-fast: false
 
     # these settings depend on the infrastructure; on upshift ocp-master-xxl they take about 4 hours
@@ -70,7 +70,7 @@ jobs:
 
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./permian
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=True -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}"}}'
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}"}}'
 
       - name: Collect anaconda logs
         if: always()
