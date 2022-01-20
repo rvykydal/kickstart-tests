@@ -82,9 +82,24 @@ jobs:
             echo "Location for ${{ matrix.scenario }} not found"
           fi
 
+      - name: Set boot.iso from scenario
+        id: boot_iso_from_scenario
+        run: |
+          set -eux
+          if [ "${{ matrix.scenario }}" == "daily-iso" ]; then
+            ${{ github.workspace }}/kickstart-tests/containers/runner/fetch_daily_iso.sh $GITHUB_TOKEN "${{ github.workspace }}/${{ matrix.scenario }}.boot.iso"
+            echo "::set-output name=boot_iso::file://${{ github.workspace }}/${{ matrix.scenario }}.boot.iso"
+          elif [ "${{ matrix.scenario }}" == "small" ]; then
+            ${{ github.workspace }}/kickstart-tests/containers/runner/fetch_daily_iso.sh $GITHUB_TOKEN "${{ github.workspace }}/${{ matrix.scenario }}.boot.iso"
+            echo "::set-output name=boot_iso::file://${{ github.workspace }}/${{ matrix.scenario }}.boot.iso"
+          else
+            echo "::set-output name=boot_iso::"
+            echo "Boot.iso for ${{ matrix.scenario }} not defined"
+          fi
+
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./permian
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","location":"${{ steps.location_from_scenario.outputs.location  }}"}}'
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","bootIso":{"x86_64":"${{ steps.boot_iso_from_scenario.outputs.boot_iso }}"},"scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","location":"${{ steps.location_from_scenario.outputs.location  }}"}}'
 
       - name: Collect anaconda logs
         if: always()
