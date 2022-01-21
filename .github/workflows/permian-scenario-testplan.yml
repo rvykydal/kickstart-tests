@@ -68,9 +68,23 @@ jobs:
             echo "Scenario ${{ matrix.scenario }} can't be mapped to platform"
           fi
 
+      - name: Set location from scenario
+        id: location_from_scenario
+        run: |
+          set -eux
+          source "${{ github.workspace }}/kickstart-tests/containers/runner/scenario.conf"
+          if [ "${{ matrix.scenario }}" == "rhel8" ]; then
+            echo "::set-output name=location::${RHEL8_LOCATION}"
+          elif [ "${{ matrix.scenario }}" == "rhel9" ]; then
+            echo "::set-output name=location::${RHEL9_LOCATION}"
+          else
+            echo "::set-output name=location::"
+            echo "Location for ${{ matrix.scenario }} not found"
+          fi
+
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./permian
-        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}"}}'
+        run: PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","location":"${{ steps.location_from_scenario.outputs.location  }}"}}'
 
       - name: Collect anaconda logs
         if: always()
