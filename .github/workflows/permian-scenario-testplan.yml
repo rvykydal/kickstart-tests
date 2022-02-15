@@ -54,6 +54,8 @@ jobs:
         working-directory: ./kickstart-tests
 
       - name: Set testplan from scenario
+        # The testplan value is used to filter test plans to be run for the scenario
+        # (the filter is defined in the testplan)
         id: testplan_from_scenario
         run: |
           set -eux
@@ -63,6 +65,8 @@ jobs:
             echo "::set-output name=testplan::rhel9"
           elif [ "${{ matrix.scenario }}" == "daily-iso" ]; then
             echo "::set-output name=testplan::daily-iso"
+          elif [ "${{ matrix.scenario }}" == "minimal" ]; then
+            echo "::set-output name=testplan::minimal"
           elif [ "${{ matrix.scenario }}" == "small" ]; then
             echo "::set-output name=testplan::small"
           else
