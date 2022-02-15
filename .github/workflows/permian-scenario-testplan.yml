@@ -68,21 +68,24 @@ jobs:
             echo "Scenario ${{ matrix.scenario }} can't be mapped to platform"
           fi
 
-      - name: Set location from scenario
-        id: location_from_scenario
+      - name: Set installation_tree from scenario
+        # Configure installation repository for the scenario
+        # Default boot.iso is location is in the installation_tree
+        id: tree_from_scenario
         run: |
           set -eux
           source "${{ github.workspace }}/kickstart-tests/containers/runner/scenario.conf"
           if [ "${{ matrix.scenario }}" == "rhel8" ]; then
-            echo "::set-output name=location::${RHEL8_LOCATION}"
+            echo "::set-output name=installation_tree::${RHEL8_INSTALLATION_TREE}"
           elif [ "${{ matrix.scenario }}" == "rhel9" ]; then
-            echo "::set-output name=location::${RHEL9_LOCATION}"
+            echo "::set-output name=installation_tree::${RHEL9_INSTALLATION_TREE}"
           else
-            echo "::set-output name=location::"
-            echo "Location for ${{ matrix.scenario }} not found"
+            echo "::set-output name=installation_tree::"
+            echo "Installation tree location for ${{ matrix.scenario }} not found"
           fi
 
       - name: Set boot.iso from scenario
+        # Configure boot.iso location explicitly overriding installation repository
         id: boot_iso_from_scenario
         run: |
           set -eux
@@ -99,7 +102,7 @@ jobs:
 
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./permian
-        run: sudo --preserve-env=TEST_JOBS PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","bootIso":{"x86_64":"${{ steps.boot_iso_from_scenario.outputs.boot_iso }}"},"scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","location":"${{ steps.location_from_scenario.outputs.location  }}"}}'
+        run: sudo --preserve-env=TEST_JOBS PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","bootIso":{"x86_64":"${{ steps.boot_iso_from_scenario.outputs.boot_iso }}"},"scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","installation_tree":"${{ steps.tree_from_scenario.outputs.installation_tree  }}"}}'
 
       - name: Collect anaconda logs
         if: always()
