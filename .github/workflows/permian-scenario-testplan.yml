@@ -53,6 +53,23 @@ jobs:
         run: sudo containers/squid.sh start
         working-directory: ./kickstart-tests
 
+      - name: Set testplan from scenario
+        id: testplan_from_scenario
+        run: |
+          set -eux
+          if [ "${{ matrix.scenario }}" == "rhel8" ]; then
+            echo "::set-output name=testplan::rhel8"
+          elif [ "${{ matrix.scenario }}" == "rhel9" ]; then
+            echo "::set-output name=testplan::rhel9"
+          elif [ "${{ matrix.scenario }}" == "daily-iso" ]; then
+            echo "::set-output name=testplan::daily-iso"
+          elif [ "${{ matrix.scenario }}" == "small" ]; then
+            echo "::set-output name=testplan::small"
+          else
+            echo "::set-output name=testplan::"
+            echo "Testplan for scenario ${{ matrix.scenario }} is not defined"
+          fi
+
       - name: Set platform from scenario
         id: platform_from_scenario
         run: |
@@ -102,7 +119,7 @@ jobs:
 
       - name: Run scenario ${{ matrix.scenario }} in container
         working-directory: ./permian
-        run: sudo --preserve-env=TEST_JOBS PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","bootIso":{"x86_64":"${{ steps.boot_iso_from_scenario.outputs.boot_iso }}"},"scenario":{"scenario":"${{ matrix.scenario }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","installation_tree":"${{ steps.tree_from_scenario.outputs.installation_tree  }}"}}'
+        run: sudo --preserve-env=TEST_JOBS PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tclib ./pipeline --debug-log permian.log -o library.directPath="${{ github.workspace }}/kickstart-tests/testlib" -o kickstart_test.retry_on_failure=True -o workflows.dry_run=False -o kickstart_test.kstest_local_repo="${{ github.workspace }}/kickstart-tests" run_event '{"type":"github.scheduled.daily.kstest","bootIso":{"x86_64":"${{ steps.boot_iso_from_scenario.outputs.boot_iso }}"},"scenario":{"testplan":"${{ steps.testplan_from_scenario.outputs.testplan }}","platform":"${{ steps.platform_from_scenario.outputs.platform }}","installation_tree":"${{ steps.tree_from_scenario.outputs.installation_tree  }}"}}'
 
       - name: Collect anaconda logs
         if: always()

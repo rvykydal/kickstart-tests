@@ -3,7 +3,7 @@ description: Daily run on current rawhide with anaconda dnf and python-blivet da
 point_person: rvykydal@redhat.com
 artifact_type: github.scheduled.daily.kstest
 execute_on:
-  - filter: event.scenario.scenario == "daily-iso"
+  - filter: event.scenario.testplan == "daily-iso"
 verified_by:
   test_cases:
     query: '"knownfailure" not in tc.tags and

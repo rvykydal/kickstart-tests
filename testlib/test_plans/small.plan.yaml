@@ -3,7 +3,7 @@ description: Run of a few tests for development
 point_person: rvykydal@redhat.com
 artifact_type: github.scheduled.daily.kstest
 execute_on:
-  - filter: event.scenario.scenario == "small"
+  - filter: event.scenario.testplan == "small"
 verified_by:
   test_cases:
     query: '"knownfailure" not in tc.tags and
