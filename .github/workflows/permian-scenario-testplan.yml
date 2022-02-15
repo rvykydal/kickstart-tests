@@ -55,7 +55,7 @@ jobs:
 
       - name: Set testplan from scenario
         # The testplan value is used to filter test plans to be run for the scenario
-        # (the filter is defined in the testplan)
+        # (the filter is referred in the testplan)
         id: testplan_from_scenario
         run: |
           set -eux
