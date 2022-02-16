@@ -41,7 +41,7 @@ jobs:
 
       - name: Clone Permian repositories
         run: |
-          git clone https://gitlab.cee.redhat.com/zveleba/permian.git --branch kstest-daily-scenario
+          git clone https://github.com/rvykydal/permian.git --branch kstest-daily-scenario
           git clone https://github.com/rhinstaller/tclib.git
 
       # use the latest official packages for the nightly runs
