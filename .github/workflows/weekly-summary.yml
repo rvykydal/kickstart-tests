@@ -12,7 +12,7 @@ jobs:
     name: Create weekly summary of test runs
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.RHINSTALLER_GITHUB_TOKEN }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
@@ -20,4 +20,4 @@ jobs:
         run: sudo apt-get install -y python3-pycurl
       - name: Run weekly-summary script
         run: |
-          PATH=./scripts/:$PATH ./scripts/weekly-summary --rebuild --artifacts=logs-daily-iso,logs-rhel9,logs-rhel8
+          PATH=./scripts/:$PATH ./scripts/weekly-summary --rebuild --artifacts=logs-daily-iso,logs-rhel9,logs-rhel8 --debug
