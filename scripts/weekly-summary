@@ -78,12 +78,14 @@ def get_artifacts(token, artifact_names, start, end):
       "expires_at": "2022-03-25T03:29:06Z"
     },
     """
+    print("DBG getting artifacts")
     req = Request(URL)
     req.add_header("Accept", "application/vnd.github.v3+json")
     req.add_header("Authorization", f"token {token}")
     with urlopen(req) as r:
         data = json.load(r)
 
+    print("DBG got artifacts")
     # Filter out the artifacts within the date range and names
     artifacts = []
     for a in data["artifacts"]:
