@@ -1,9 +1,6 @@
 # Run all kickstart tests for all active branches in Permian
 name: Daily run in Permian
 on:
-  schedule:
-    # run after daily-boot-iso.yml
-    - cron: 0 23 * * *
   workflow_dispatch:
 
 permissions:
@@ -12,7 +9,7 @@ permissions:
 jobs:
   scenario:
     name: Scenario in Permian
-    runs-on: [self-hosted, kstest]
+    runs-on: [self-hosted, kstest-permian]
     strategy:
       matrix:
         scenario: [daily-iso, rhel8, rhel9]
@@ -72,6 +69,7 @@ jobs:
         with:
           repository: rhinstaller/permian
           path: permian
+          ref: main
 
       - name: Clone tclib repository
         uses: actions/checkout@v2
