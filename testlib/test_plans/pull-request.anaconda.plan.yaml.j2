@@ -1,0 +1,15 @@
+name: pull request
+description: Tests run on GitHub pull requests with supplied query
+point_person: rvykydal@redhat.com
+artifact_type: github.pr.anaconda
+verified_by:
+  test_cases:
+    # Specific query should be supplied by run_subset or everything event
+    query: 'True'
+configurations:
+  - architecture: x86_64
+reporting:
+  - type: github-pr
+    data:
+      pr-check-name: {{ pr_check_name }}
+      pr-check-summary: "Kickstart tests run on a pull request comment"
