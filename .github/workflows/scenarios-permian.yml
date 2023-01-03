@@ -164,7 +164,7 @@ jobs:
           PYTHONPATH=${PYTHONPATH:-}:${{ github.workspace }}/tplib \
           ./pipeline --debug-log permian.log \
             --settings settings.ini \
-            --override workflows.dry_run=False \
+            --override workflows.dry_run=True \
             run_event '{
               "type":"github.scheduled.daily.kstest.${{ matrix.scenario }}",
               ${{ steps.boot_iso_from_scenario.outputs.boot_iso }}
