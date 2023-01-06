@@ -22,7 +22,7 @@ jobs:
       - name: Differential ShellCheck
         uses: redhat-plumbers-in-action/differential-shellcheck@v3
         env:
-          SHELLCHECK_OPTS: -e SC2034
+          SHELLCHECK_OPTS: -e SC2034 -s bash
         with:
           severity: warning
           token: ${{ secrets.GITHUB_TOKEN }}
