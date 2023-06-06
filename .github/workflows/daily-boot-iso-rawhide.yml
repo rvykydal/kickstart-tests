@@ -60,6 +60,8 @@ jobs:
           lorax -p Fedora -v \$VERSION_ID -r \$VERSION_ID --volid Fedora-S-dvd-x86_64-rawh \
             -s http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/ \
             -s https://download.copr.fedorainfracloud.org/results/rpmsoftwaremanagement/dnf-nightly/fedora-rawhide-x86_64/ \
+            # Temporary solution, dnf.conf was moved from dnf-data to dnf5, but dnf5 should be soonish in rawhide
+            -s https://download.copr.fedorainfracloud.org/results/rpmsoftwaremanagement/dnf5-unstable/fedora-rawhide-x86_64/ \
             -s https://download.copr.fedorainfracloud.org/results/@rhinstaller/Anaconda/fedora-rawhide-x86_64/ \
             -s https://copr-be.cloud.fedoraproject.org/results/@storage/blivet-daily/fedora-rawhide-x86_64/ \
             -s https://copr-be.cloud.fedoraproject.org/results/@storage/udisks-daily/fedora-rawhide-x86_64/ \
