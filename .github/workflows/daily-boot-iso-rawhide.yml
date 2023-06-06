@@ -1,15 +1,13 @@
 # Build Rawhide boot.iso daily
 name: Build daily Rawhide+COPR boot.iso
 on:
-  schedule:
-    - cron: 0 22 * * *
   # be able to start this action manually from a actions tab when needed
   workflow_dispatch:
 
 jobs:
   boot_iso:
     name: Build boot.iso
-    runs-on: [self-hosted, kstest]
+    runs-on: [self-hosted, kstest-permian]
     env:
       LORAX_BUILD_CONTAINER: fedora:rawhide
 
