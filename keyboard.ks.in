@@ -1,4 +1,6 @@
 #version=DEVEL
+#modified
+
 #test name: keyboard
 %ksappend repos/default.ks
 network --bootproto=dhcp
