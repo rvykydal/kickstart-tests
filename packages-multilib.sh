@@ -21,4 +21,6 @@
 # shellcheck disable=SC2034
 TESTTYPE="packaging skip-on-rhel-8 gh641"
 
+# modify
+
 . ${KSTESTDIR}/functions.sh
