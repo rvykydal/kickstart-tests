@@ -151,11 +151,11 @@ jobs:
           if [ ${{ matrix.platform }} == "daily-iso" ]; then
             echo "skip_tests=skip-on-fedora" >> $GITHUB_OUTPUT
             echo "disabled_testtypes=$SKIP_TESTTYPES_DAILY_ISO" >> $GITHUB_OUTPUT
-            echo "platform=rawhide" >> $GITHUB_OUTPUT
+            echo "platform=fedora_rawhide" >> $GITHUB_OUTPUT
           elif [ ${{ matrix.platform }} == "rawhide" ]; then
             echo "skip_tests=skip-on-fedora" >> $GITHUB_OUTPUT
             echo "disabled_testtypes=$SKIP_TESTTYPES_RAWHIDE" >> $GITHUB_OUTPUT
-            echo "platform=rawhide" >> $GITHUB_OUTPUT
+            echo "platform=fedora_rawhide" >> $GITHUB_OUTPUT
           elif [ ${{ matrix.platform }} == "rhel8" ]; then
             echo "skip_tests=skip-on-rhel,skip-on-rhel-8" >> $GITHUB_OUTPUT
             echo "disabled_testtypes=$SKIP_TESTTYPES_RHEL8" >> $GITHUB_OUTPUT
