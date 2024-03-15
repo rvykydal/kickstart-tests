@@ -94,15 +94,11 @@ jobs:
           sudo podman volume rm --all || true
           sudo rm -rf * .git
 
-      - name: Clone repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.pr-info.outputs.sha }}
-          path: kickstart-tests
-
       - name: Check out kickstart-tests
         uses: actions/checkout@v4
         with:
+          ref: ${{ needs.pr-info.outputs.sha }}
+          fetch-depth: 0
           #repository: rhinstaller/kickstart-tests
           repository: rvykydal/kickstart-tests
           path: kickstart-tests
@@ -136,8 +132,14 @@ jobs:
         working-directory: ./kickstart-tests
         id: get_changed_tests
         run: |
+          set -eux
+
           git fetch origin
-          CHANGED_TESTS=$(git diff --name-only origin/$TARGET_BRANCH ${{ needs.pr-info.outputs.sha }} -- *.ks.in $(find -maxdepth 1 -name '*.sh' -perm -u+x) | sed 's/\.ks\.in$//; s/\.sh$//' | sort -u | tr '\n' ' ')
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git log --oneline -1 origin/${{ env.TARGET_BRANCH }}
+          BASE_COMMIT=$(git merge-base ${{ needs.pr-info.outputs.sha }} origin/${{ env.TARGET_BRANCH }})
+          CHANGED_TESTS=$(git diff --name-only $BASE_COMMIT HEAD -- *.ks.in $(find -maxdepth 1 -name '*.sh' -perm -u+x) | sed 's/\.ks\.in$//; s/\.sh$//' | sort -u | tr '\n' ' ')
           echo "changed_tests=${CHANGED_TESTS}" >> $GITHUB_OUTPUT
 
       - name: Get skipped tests for platform ${{ matrix.platform }}
