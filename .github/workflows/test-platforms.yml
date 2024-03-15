@@ -94,17 +94,11 @@ jobs:
           sudo podman volume rm --all || true
           sudo rm -rf * .git
 
-      - name: Clone repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.pr-info.outputs.sha }}
-          path: kickstart-tests
-
       - name: Check out kickstart-tests
         uses: actions/checkout@v4
         with:
-          #repository: rhinstaller/kickstart-tests
           ref: ${{ needs.pr-info.outputs.sha }}
+          #repository: rhinstaller/kickstart-tests
           repository: rvykydal/kickstart-tests
           path: kickstart-tests
 
