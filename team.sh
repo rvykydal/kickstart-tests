@@ -30,6 +30,7 @@ TESTTYPE=${TESTTYPE:-"network"}
 
 . ${KSTESTDIR}/functions.sh
 
+# change team
 
 kernel_args() {
     echo ${DEFAULT_BOOTOPTS} ip=${KSTEST_NETDEV1}:dhcp
