@@ -21,4 +21,6 @@
 # shellcheck disable=SC2034
 TESTTYPE="keyboard i18n coverage"
 
+# changed on pr
+
 . ${KSTESTDIR}/functions.sh
