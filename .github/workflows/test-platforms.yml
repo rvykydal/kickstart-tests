@@ -142,6 +142,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git log --oneline -1 origin/${{ env.TARGET_BRANCH }}
+          git checkout ${{ needs.pr-info.outputs.sha }}
           git rebase origin/${{ env.TARGET_BRANCH }}
           CHANGED_TESTS=$(git diff --name-only origin/$TARGET_BRANCH HEAD -- *.ks.in $(find -maxdepth 1 -name '*.sh' -perm -u+x) | sed 's/\.ks\.in$//; s/\.sh$//' | sort -u | tr '\n' ' ')
           echo "changed_tests=${CHANGED_TESTS}" >> $GITHUB_OUTPUT
