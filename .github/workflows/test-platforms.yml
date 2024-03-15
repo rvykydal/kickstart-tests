@@ -139,7 +139,8 @@ jobs:
           git log --oneline -1
           git log --oneline -1 origin/${{ env.TARGET_BRANCH }}
           git rebase origin/${{ env.TARGET_BRANCH }}
-          CHANGED_TESTS=$(git diff --name-only origin/$TARGET_BRANCH HEAD -- *.ks.in $(find -maxdepth 1 -name '*.sh' -perm -u+x) | sed 's/\.ks\.in$//; s/\.sh$//' | sort -u | tr '\n' ' ')
+          BASE_COMMIT=$(git merge-base HEAD origin/$TARGET_BRANCH)
+          CHANGED_TESTS=$(git diff --name-only $BASE_COMMIT HEAD -- *.ks.in $(find -maxdepth 1 -name '*.sh' -perm -u+x) | sed 's/\.ks\.in$//; s/\.sh$//' | sort -u | tr '\n' ' ')
           echo "changed_tests=${CHANGED_TESTS}" >> $GITHUB_OUTPUT
           git checkout ${{ needs.pr-info.outputs.sha }}
 
