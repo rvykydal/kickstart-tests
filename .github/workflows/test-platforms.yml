@@ -241,7 +241,7 @@ jobs:
         run: |
           set -eux
           if [ "${{ matrix.platform }}" == "rhel8" ] || [ "${{ matrix.platform }}" == "rhel9" ]; then
-            source ./scripts/defaults-${{ matrix.platform }}
+            source ./scripts/defaults-${{ matrix.platform }}.sh
             echo "installation_tree=${KSTEST_URL}" >> $GITHUB_OUTPUT
             echo "modular_url=${KSTEST_MODULAR_URL}" >> $GITHUB_OUTPUT
           else
