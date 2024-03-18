@@ -30,6 +30,7 @@ TESTTYPE="network coverage"
 
 . ${KSTESTDIR}/functions.sh
 
+#modify
 
 kernel_args() {
     echo ${DEFAULT_BOOTOPTS} ip=${KSTEST_NETDEV1}:dhcp
