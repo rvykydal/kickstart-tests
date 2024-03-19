@@ -204,6 +204,7 @@ jobs:
       # we post statuses manually as this does not run from a pull_request event
       # https://developer.github.com/v3/repos/statuses/#create-a-status
       - name: Create in-progress status
+        id: create_status
         uses: octokit/request-action@v2.x
         with:
           route: 'POST /repos/${{ github.repository }}/statuses/${{ needs.pr-info.outputs.sha }}'
@@ -321,19 +322,19 @@ jobs:
             permian/permian.log
 
   result:
+    needs: [platform, pr-info]
     if: ${{ always() }}
     name: Set result status
     runs-on: ubuntu-latest
     env:
       STATUS_NAME: test-platforms
-    needs: [platform, pr-info]
     steps:
       - name: Show overall status
         uses: octokit/request-action@v2.x
         with:
           route: 'POST /repos/${{ github.repository }}/statuses/${{ needs.pr-info.outputs.sha }}'
           context: '${{ env.STATUS_NAME }} ${{ needs.pr-info.outputs.launch_args }}'
-          description: 'finished'
+          description: 'finished ${{ needs.platform.steps.create_status.result }}'
           state: ${{ needs.platform.result }}
           target_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
         env:
