@@ -21,6 +21,8 @@
 # shellcheck disable=SC2034
 TESTTYPE="${TESTTYPE:-"network"} coverage"
 
+#modify
+
 . ${KSTESTDIR}/functions.sh
 
 
