@@ -247,6 +247,8 @@ The following environment variables are currently supported:
   to specify for a new platform (os release) that is not detectable yet, for
   example to make sure the expected network device naming scheme is used.
 
+# modify
+
 Chapter 5. Sharing common code in kickstart (.ks.in) files
 ==========================================================
 
