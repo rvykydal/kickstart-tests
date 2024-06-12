@@ -20,6 +20,8 @@
 # shellcheck disable=SC2034
 TESTTYPE="payload ostree bootc reboot skip-on-rhel-8 skip-on-rhel-10"
 
+# modifies
+
 . ${KSTESTDIR}/functions.sh
 
 copy_interesting_files_from_system() {

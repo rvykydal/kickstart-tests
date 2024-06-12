@@ -21,6 +21,8 @@
 # shellcheck disable=SC2034
 TESTTYPE="payload ostree skip-on-rhel"
 
+# modified
+
 . ${KSTESTDIR}/functions.sh
 
 kernel_args() {
