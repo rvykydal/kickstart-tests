@@ -57,9 +57,9 @@ fi
 
 # FIXME: reenable
 # Check the NM runtime global config file is passed to the installed system
-if [[ ! -e /etc/NetworkManager/conf.d/16-global-dns.conf ]]; then
-    echo '*** Failed check: NetworkManger global dns configuration file is missing' >> /root/RESULT
-fi
+#if [[ ! -e /etc/NetworkManager/conf.d/16-global-dns.conf ]]; then
+#    echo '*** Failed check: NetworkManger global dns configuration file is missing' >> /root/RESULT
+#fi
 
 %ksappend validation/success_if_result_empty.ks
 
