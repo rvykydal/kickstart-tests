@@ -26,3 +26,9 @@ TESTTYPE=${TESTTYPE:-"network"}
 kernel_args() {
     echo ${DEFAULT_BOOTOPTS} rd.net.dns=dns+tls://edns-idmops.psi.redhat.com rd.net.dns-resolve-mode=exclusive rd.net.dns-backend=dnsconfd ip=${KSTEST_NETDEV1}:dhcp
 }
+
+additional_runner_args() {
+    # Wait for reboot and shutdown of the VM,
+    # but exit after the specified timeout.
+    echo "--wait $(get_timeout)"
+}

@@ -14,6 +14,13 @@
 %ksappend data/edns-idmops.psi.redhat.com.crt
 %end
 
+# Reboot the installed system.
+reboot
+
+# Validate on the first boot.
+%ksappend validation/success_on_first_boot.ks
+
+
 %post --nochroot
 
 # Check the presence on installed system
@@ -48,11 +55,43 @@ if [[ $? -ne 0 ]]; then
     echo '*** Failed check: rd.net.dns-backend option is missing' >> /root/RESULT
 fi
 
+# FIXME: reenable
 # Check the NM runtime global config file is passed to the installed system
 if [[ ! -e /etc/NetworkManager/conf.d/16-global-dns.conf ]]; then
     echo '*** Failed check: NetworkManger global dns configuration file is missing' >> /root/RESULT
 fi
 
 %ksappend validation/success_if_result_empty.ks
+
+dns_ip="$(nmcli dev show | grep DNS | cut -d ':' -f 2 | tr -d ' ')"
+if [[ ${dns_ip} != "FIXME10.0.2.3" ]]; then
+    echo "*** Failed check: found unexpected active DNS servers during installation: ${dns_ip}" >> /root/RESULT
+fi
+
+%end
+
+# Set up the actual test.
+%post
+
+# Write the code to run after reboot. It lists files with wrong SELinux contexts.
+cat > /usr/libexec/kickstart-test.sh << 'EOF'
+
+succeeded="no"
+i=0
+while [ $i -le 15 ] && [ ${succeeded} != "yes" ];
+do
+    dns_ip="$(nmcli dev show | grep DNS | cut -d ':' -f 2 | tr -d ' ')"
+    if [[ ${dns_ip} == "FIXME10.0.2.3" ]]; then
+        succeeded=yes
+    fi
+    sleep 1
+    (( i++ ))
+done
+
+if [ ${succeeded} != "yes" ]; then
+    echo "*** Failed check: found unexpected active DNS servers after reboot: ${dns_ip}"
+fi
+
+EOF
 
 %end
