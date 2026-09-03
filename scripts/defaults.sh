@@ -7,7 +7,7 @@
 # CAUTION: the sed expression we currently use does not like white-space in the strings
 
 source ./network-device-names.cfg
-export KSTEST_URL='http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/'
+export KSTEST_URL='http://kojipkgs.fedoraproject.org/compose/branched/Fedora-45-20260824.n.0/compose/Everything/x86_64/os/'
 export KSTEST_METALINK='https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&arch=x86_64'
 export KSTEST_MIRRORLIST='https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=x86_64'
 export KSTEST_MODULAR_URL='http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Modular/x86_64/os/'
